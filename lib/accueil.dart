@@ -16,6 +16,15 @@ class Accueil extends StatelessWidget {
         title: const Text('Accueil'),
         backgroundColor: c1,
         automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/empty_likes.svg',
+            ),
+            onPressed: null, //do something,
+            color: Colors.red,
+          )
+        ],
       ),
       body: Center(
         child: Column(
