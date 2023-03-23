@@ -16,6 +16,12 @@ class Accueil extends StatelessWidget {
         title: const Text('Accueil'),
         backgroundColor: c1,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: SvgPicture.asset('assets/icons/empty_likes.svg'),
+            onPressed: () => Accueil(),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
@@ -38,7 +44,7 @@ class Accueil extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Home()),
+                  MaterialPageRoute(builder: (context) => Home()),
                 );
               },
               style: ElevatedButton.styleFrom(

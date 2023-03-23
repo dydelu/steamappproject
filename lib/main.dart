@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GoogleSans',
       ),
-      home: const Home(),
+      home: Home(),
     );
   }
 }
