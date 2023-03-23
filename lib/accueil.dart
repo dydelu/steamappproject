@@ -44,7 +44,7 @@ class Accueil extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Home()),
+                  MaterialPageRoute(builder: (context) => Home()),
                 );
               },
               style: ElevatedButton.styleFrom(
