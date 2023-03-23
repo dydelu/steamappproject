@@ -5,44 +5,45 @@ import 'jeu.dart';
 import 'wishlist.dart';
 import 'likes.dart';
 
-
 class Accueil extends StatelessWidget {
+  Color c1 = const Color(0xFF1A2026);
+  Color c2 = const Color(0xFF636AF6);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Accueil'),
+        centerTitle: false,
+        title: const Text('Accueil'),
+        backgroundColor: c1,
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              child: Text('Wishlist'),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Wishlist()),);
-              },
-            ),
-            ElevatedButton(
-              child: Text('Likes'),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Likes()),);
-              },
-            ),
-             ElevatedButton(
-              child: Text('CECI EST UN JEU'),
+              child: const Text('CECI EST UN JEU'),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Jeu()),
                 );
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: c2,
+              ),
             ),
             ElevatedButton(
-              child: Text('Se deconnecter'),
+              child: const Text('Se deconnecter'),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Home()),);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Home()),
+                );
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: c2,
+              ),
             ),
           ],
         ),
