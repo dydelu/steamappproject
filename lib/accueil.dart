@@ -11,14 +11,22 @@ class Accueil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: c1, //<-- SEE HERE
       appBar: AppBar(
         centerTitle: false,
-        title: const Text('Accueil'),
+        title:
+            const Text('Accueil', style: TextStyle(fontFamily: 'GoogleSans')),
         backgroundColor: c1,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: SvgPicture.asset('assets/icons/empty_likes.svg'),
+            icon: SvgPicture.asset(
+                '/Users/julesm/github/steamappproject/assets/icons/like.svg'),
+            onPressed: () => Accueil(),
+          ),
+          IconButton(
+            icon: SvgPicture.asset(
+                '/Users/julesm/github/steamappproject/assets/icons/whishlist.svg'),
             onPressed: () => Accueil(),
           ),
         ],
@@ -28,19 +36,6 @@ class Accueil extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              child: const Text('CECI EST UN JEU'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Jeu()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: c2,
-              ),
-            ),
-            ElevatedButton(
-              child: const Text('Se deconnecter'),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -50,6 +45,7 @@ class Accueil extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: c2,
               ),
+              child: const Text('Se deconnecter'),
             ),
           ],
         ),
