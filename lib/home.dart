@@ -14,7 +14,7 @@ class Home extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              child: Text('Connexion'),
+              child: Text('ConnexionASDASD'),
               onPressed: () {
                 Navigator.push(
                   context,
