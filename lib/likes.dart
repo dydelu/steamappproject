@@ -3,37 +3,34 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'home.dart';
 import 'accueil.dart';
 import 'jeu.dart';
-
+import 'colors.dart';
 
 class Likes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: c1,
       appBar: AppBar(
-        title: Text('Likes'),
+        centerTitle: false,
+        title:
+            const Text('Mes Likes', style: TextStyle(fontFamily: 'GoogleSans')),
+        backgroundColor: c1,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: SvgPicture.asset(
+              '/Users/julesm/github/steamappproject/assets/icons/close.svg'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Home()),
+            );
+          },
+        ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              child: Text('CECI EST UN JEU'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Jeu()),
-                );
-              },
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Accueil()),
-                );
-              }, icon: SvgPicture.asset('assets/icons/back.svg'), label: Text('Retour a l accueil'),
-            ),
-          ],
+          children: const <Widget>[],
         ),
       ),
     );
