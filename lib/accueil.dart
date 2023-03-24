@@ -5,6 +5,7 @@ import 'jeu.dart';
 import 'wishlist.dart';
 import 'likes.dart';
 import 'colors.dart';
+import 'model/JeuDetails.dart';
 
 class Accueil extends StatelessWidget {
   @override
@@ -40,11 +41,52 @@ class Accueil extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(15),
+            child: Text(
+              "Les meilleures ventes",
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                  decoration: TextDecoration.underline),
+            ),
+          ),
+          Center(
+            child: FutureBuilder<List<TransactionDetails>>(
+              future: fetchAlbum(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: CircleAvatar(
+                          child: Image.network(
+                              snapshot.data![index].avatar.toString()),
+                        ),
+                        title: Text(
+                          snapshot.data![index].name.toString(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        trailing: Text(snapshot.data![index].amount.toString(),
+                            style: TextStyle(color: Colors.white)),
+                        subtitle: Text(snapshot.data![index].date.toString(),
+                            style: TextStyle(color: Colors.white)),
+                      );
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
+                return const CircularProgressIndicator();
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
