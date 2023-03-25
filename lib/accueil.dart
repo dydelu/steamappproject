@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:steamappproject/jeu.dart';
 import 'wishlist.dart';
 import 'likes.dart';
 import 'colors.dart';
@@ -37,25 +38,26 @@ class _AccueilState extends State<Accueil> {
       backgroundColor: c1,
       appBar: AppBar(
         centerTitle: false,
-        title:
-            const Text('Accueil', style: TextStyle(fontFamily: 'GoogleSans')),
+        title: const Text('Accueil',
+          style: TextStyle(fontFamily: 'GoogleSans'), ),
+
         titleSpacing: 15,
         backgroundColor: c1,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: SvgPicture.asset(
-                '/Users/julesm/github/steamappproject/assets/icons/like.svg'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Likes()),
-              );
-            },
+              icon: SvgPicture.asset(
+                  'assets/icons/like.svg'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Likes()),
+                );
+              }
           ),
           IconButton(
             icon: SvgPicture.asset(
-                '/Users/julesm/github/steamappproject/assets/icons/whishlist.svg'),
+                'assets/icons/whishlist.svg'),
             onPressed: () {
               Navigator.push(
                 context,
@@ -71,34 +73,71 @@ class _AccueilState extends State<Accueil> {
           if (snapshot.hasData) {
             final List<GamesDetails> gamesDetails = snapshot.data!;
             return ListView.builder(
-              itemCount: gamesDetails.length,
+              itemCount: gamesDetails.length < 10 ? gamesDetails.length : 10,
               itemBuilder: (context, index) {
                 final GamesDetails gameDetails = gamesDetails[index];
                 return Card(
+                  margin: EdgeInsets.all(5),
+                  color: c3,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.network(gameDetails.headerImage),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              gameDetails.name,
-                              style: TextStyle(fontSize: 20),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 100.0,
+                            height: 100.0,
+                            child:  Image.network(gameDetails.headerImage),
+                          ),
+                          Container(
+                            width: 190.0,
+                            height: 100.0,
+                            padding: const EdgeInsets.only(left: 5, bottom: 5, top: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  gameDetails.name,
+                                  style: TextStyle(fontSize: 20, color: Colors.white,),
+                                ),
+                                Text(
+                                  'Price: ${gameDetails.price}',
+                                  style: TextStyle(fontSize: 16, color: Colors.white,),
+                                ),
+                                Text(
+                                  'Publisher: ${gameDetails.publisher}',
+                                  style: TextStyle(fontSize: 16, color: Colors.white,),
+                                ),
+                              ],
                             ),
-                            Text(
-                              'Price: ${gameDetails.price}',
-                              style: TextStyle(fontSize: 16),
+                          ),
+                          Spacer(),
+                          Container(
+                            width: 80.0,
+                            height: 100.0,
+                            child:  ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(0.0),
+                                ),
+                                  backgroundColor: c2,
+                                  elevation: 0,
+                                  padding: const EdgeInsets.all(2),
+                                  textStyle: const TextStyle(fontSize: 18),
+                              ),
+                              child: const Text('En savoir plus', textAlign: TextAlign.center,),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Jeu()),
+                                );
+                              },
                             ),
-                            Text(
-                              'Publisher: ${gameDetails.publisher}',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
+
+
                     ],
                   ),
                 );
