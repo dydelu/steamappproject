@@ -5,8 +5,31 @@ import 'likes.dart';
 import 'colors.dart';
 import 'model/JeuDetails.dart';
 
-class Accueil extends StatelessWidget {
-  final List<int> TEST = []; // A MODIFIER !!
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class Accueil extends StatefulWidget {
+  const Accueil({Key? key}) : super(key: key);
+
+  @override
+  _AccueilState createState() => _AccueilState();
+}
+
+class _AccueilState extends State<Accueil> {
+  late Future<List<GamesDetails>> _futureGames;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureGames = fetchAllGamesDetails();
+  }
+
+  Future<List<GamesDetails>> fetchAllGamesDetails() async {
+    final List<int> appids = await fetchAllGames();
+    final List<GamesDetails> gamesDetails = await fetchInfos(appids);
+    return gamesDetails;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +39,13 @@ class Accueil extends StatelessWidget {
         centerTitle: false,
         title:
             const Text('Accueil', style: TextStyle(fontFamily: 'GoogleSans')),
-        titleSpacing: 0,
+        titleSpacing: 15,
         backgroundColor: c1,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: SvgPicture.asset(
-                'assets/icons/like.svg'),
+                '/Users/julesm/github/steamappproject/assets/icons/like.svg'),
             onPressed: () {
               Navigator.push(
                 context,
@@ -32,7 +55,7 @@ class Accueil extends StatelessWidget {
           ),
           IconButton(
             icon: SvgPicture.asset(
-                'assets/icons/whishlist.svg'),
+                '/Users/julesm/github/steamappproject/assets/icons/whishlist.svg'),
             onPressed: () {
               Navigator.push(
                 context,
@@ -42,52 +65,52 @@ class Accueil extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(15),
-            child: Text(
-              "Les meilleures ventes",
-              style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                  decoration: TextDecoration.underline),
-            ),
-          ),
-          Center(
-            child: FutureBuilder<List<GamesDetails>>(
-              future: fetchInfos(TEST), // A MODIFIER !!!
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: CircleAvatar(
-                          child: Image.network(
-                              snapshot.data![index].appid.toString()),
+      body: FutureBuilder<List<GamesDetails>>(
+        future: _futureGames,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final List<GamesDetails> gamesDetails = snapshot.data!;
+            return ListView.builder(
+              itemCount: gamesDetails.length,
+              itemBuilder: (context, index) {
+                final GamesDetails gameDetails = gamesDetails[index];
+                return Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.network(gameDetails.headerImage),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              gameDetails.name,
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Text(
+                              'Price: ${gameDetails.price}',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            Text(
+                              'Publisher: ${gameDetails.publisher}',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
                         ),
-                        title: Text(
-                          snapshot.data![index].appid.toString(),
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        trailing: Text(snapshot.data![index].appid.toString(),
-                            style: const TextStyle(color: Colors.white)),
-                        subtitle: Text(snapshot.data![index].appid.toString(),
-                            style: const TextStyle(color: Colors.white)),
-                      );
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                }
-                return const CircularProgressIndicator();
+                      ),
+                    ],
+                  ),
+                );
               },
-            ),
-          ),
-        ],
+            );
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }

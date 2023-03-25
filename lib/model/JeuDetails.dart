@@ -23,7 +23,7 @@ Future<List<int>> fetchAllGames() async {
 class GamesDetails {
   final int appid;
   final String name;
-  final int price;
+  final String price;
   final String publisher;
   final String headerImage;
 
@@ -43,28 +43,27 @@ Future<List<GamesDetails>> fetchInfos(List<int> infoIds) async {
         'https://store.steampowered.com/api/appdetails?appids=$appid'));
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic>? jsonResponse =
-          json.decode(response.body)[appid.toString()]['data'];
-      if (jsonResponse != null) {
-        final String name = jsonResponse['name'];
-        final String headerImage = jsonResponse['header_image'];
-        final String publisher = jsonResponse['publishers'];
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      final Map<String, dynamic>? data1 = jsonResponse['$appid']?['data'];
+      final Map<String, dynamic>? data2 = jsonResponse['1']?['data'];
+      final Map<String, dynamic>? gameData = data1 ?? data2;
 
-        final Map<bool, dynamic>? jsonGameFree =
-            json.decode(response.body)[appid.toString()]['data']['is_free'];
+      if (gameData != null) {
+        final String name = gameData['name'];
+        final String headerImage = gameData['header_image'];
+        final List<dynamic> publishers = gameData['publishers'];
+        final String publisher = publishers.join(', ');
 
-        final Map<String, dynamic>? jsonGamePrice = json
-            .decode(response.body)[appid.toString()]['data']['price_overview'];
-
-        int price;
+        final bool? jsonGameFree = gameData['is_free'];
+        final Map<String, dynamic>? jsonGamePrice = gameData['price_overview'];
+        String price;
 
         if (jsonGameFree == true) {
-          price = 0;
+          price = "0";
         } else {
-          price = jsonGamePrice!['final_formatted'];
+          price = jsonGamePrice?['final_formatted'] ?? "";
         }
 
-        //On envoie tout dans notre constructeur
         final GamesDetails jeu = GamesDetails(
             appid: appid,
             name: name,
