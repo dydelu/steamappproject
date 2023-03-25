@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'home.dart';
-import 'jeu.dart';
 import 'wishlist.dart';
 import 'likes.dart';
 import 'colors.dart';
@@ -55,8 +53,8 @@ class Accueil extends StatelessWidget {
             ),
           ),
           Center(
-            child: FutureBuilder<List<TransactionDetails>>(
-              future: fetchAlbum(),
+            child: FutureBuilder<List<GamesDetails>>(
+              future: fetchInfos(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
@@ -66,16 +64,16 @@ class Accueil extends StatelessWidget {
                       return ListTile(
                         leading: CircleAvatar(
                           child: Image.network(
-                              snapshot.data![index].avatar.toString()),
+                              snapshot.data![index].appid.toString()),
                         ),
                         title: Text(
-                          snapshot.data![index].name.toString(),
-                          style: TextStyle(color: Colors.white),
+                          snapshot.data![index].appid.toString(),
+                          style: const TextStyle(color: Colors.white),
                         ),
-                        trailing: Text(snapshot.data![index].amount.toString(),
-                            style: TextStyle(color: Colors.white)),
-                        subtitle: Text(snapshot.data![index].date.toString(),
-                            style: TextStyle(color: Colors.white)),
+                        trailing: Text(snapshot.data![index].appid.toString(),
+                            style: const TextStyle(color: Colors.white)),
+                        subtitle: Text(snapshot.data![index].appid.toString(),
+                            style: const TextStyle(color: Colors.white)),
                       );
                     },
                   );
