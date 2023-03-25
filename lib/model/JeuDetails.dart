@@ -24,7 +24,7 @@ Future<List<int>> fetchAllGames() async {
 class GamesDetails {
   final int appid;
   final String name;
-  final String price;
+  final int price;
   final String publisher;
   final String headerImage;
 
@@ -51,24 +51,18 @@ Future<List<GamesDetails>> fetchInfos(List<int> infoIds) async {
         final String headerImage = jsonResponse['header_image'];
         final String publisher = jsonResponse['publishers'];
 
-        final Map<String, dynamic>? jsonResponse2 = json
+        final Map<bool, dynamic>? jsonGameFree =
+            json.decode(response.body)[appid.toString()]['data']['is_free'];
+
+        final Map<String, dynamic>? jsonGamePrice = json
             .decode(response.body)[appid.toString()]['data']['price_overview'];
 
-        //On créé notre var Prix
-        String price;
-        //Si le jeu n'est pas gratuit (S'il est gratuit price_overview n'existe pas dans le code)
-        if (jsonResponse2 != null) {
-          //Si le prix du jeu est correctement renseigné
-          if (jsonResponse2['initial_formatted'] != "") {
-            //On récupère le prix initial (avant réduction)
-            price = jsonResponse2['initial_formatted'];
-          } else {
-            //Sinon on récupère le prix final
-            price = jsonResponse2['final_formatted'];
-          }
+        int price;
+
+        if (jsonGameFree == true) {
+          price = 0;
         } else {
-          //Sinon on le met gratuit
-          price = "Gratuit";
+          price = jsonGamePrice!['final_formatted'];
         }
 
         //On envoie tout dans notre constructeur
