@@ -22,7 +22,7 @@ class Accueil extends StatelessWidget {
         actions: [
           IconButton(
             icon: SvgPicture.asset(
-                '/Users/julesm/github/steamappproject/assets/icons/like.svg'),
+                'assets/icons/like.svg'),
             onPressed: () {
               Navigator.push(
                 context,
@@ -32,7 +32,7 @@ class Accueil extends StatelessWidget {
           ),
           IconButton(
             icon: SvgPicture.asset(
-                '/Users/julesm/github/steamappproject/assets/icons/whishlist.svg'),
+                'assets/icons/whishlist.svg'),
             onPressed: () {
               Navigator.push(
                 context,

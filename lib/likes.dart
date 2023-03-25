@@ -19,11 +19,11 @@ class Likes extends StatelessWidget {
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: SvgPicture.asset(
-              '/Users/julesm/github/steamappproject/assets/icons/close.svg'),
+              'assets/icons/close.svg'),
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Home()),
+              MaterialPageRoute(builder: (context) => Accueil()),
             );
           },
         ),
@@ -31,7 +31,40 @@ class Likes extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[],
+          children:  <Widget>[
+            Container(
+              child: SvgPicture.asset("assets/icons/empty_likes.svg"),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 30,
+                right: 30,
+                bottom: 25,
+              ),
+              child: Container(
+                alignment: Alignment.center,
+                child: Column(children: const [
+                  SizedBox(
+                    width: 300,
+                    height: 100,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Vous n'avez pas liké de contenu. Cliquez sur le coeur pour en rajouter.",
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "GoogleSans",
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
+            ),
+          ],
         ),
       ),
     );
