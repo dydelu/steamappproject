@@ -14,6 +14,7 @@ class Likes extends StatelessWidget {
         centerTitle: false,
         title:
             const Text('Mes Likes', style: TextStyle(fontFamily: 'GoogleSans')),
+        titleSpacing: 0,
         backgroundColor: c1,
         automaticallyImplyLeading: false,
         leading: IconButton(

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -80,4 +79,3 @@ Future<List<GamesDetails>> fetchInfos(List<int> infoIds) async {
   }
   return jeux;
 }
-

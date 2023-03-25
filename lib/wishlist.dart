@@ -14,6 +14,7 @@ class Wishlist extends StatelessWidget {
         centerTitle: false,
         title: const Text('Ma Liste de souhaits',
             style: TextStyle(fontFamily: 'GoogleSans')),
+        titleSpacing: 0,
         backgroundColor: c1,
         automaticallyImplyLeading: false,
         leading: IconButton(
