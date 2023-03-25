@@ -6,6 +6,9 @@ import 'colors.dart';
 import 'model/JeuDetails.dart';
 
 class Accueil extends StatelessWidget {
+
+  final List<int> TEST = [];  // A MODIFIER !!
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +57,7 @@ class Accueil extends StatelessWidget {
           ),
           Center(
             child: FutureBuilder<List<GamesDetails>>(
-              future: fetchInfos(),
+              future: fetchInfos(TEST),  // A MODIFIER !!!
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(
