@@ -86,3 +86,4 @@ Future<List<GamesDetails>> fetchInfos(List<int> infoIds) async {
   }
   return jeux;
 }
+

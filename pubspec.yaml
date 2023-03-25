@@ -36,6 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg: any
   http: ^0.13.5
+  firebase_core: ^2.8.0
+  firebase_auth: ^4.3.0
+
 
 dev_dependencies:
   flutter_test:
@@ -55,7 +58,10 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - assets/
+    - assets/fonts/
+    - assets/icons/
+    - assets/images/
+    - assets/images/bg.jpg
 
   fonts:
     - family: Proxima

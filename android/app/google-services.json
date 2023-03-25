@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "173741683129",
+    "project_id": "projetsteam-5c727",
+    "storage_bucket": "projetsteam-5c727.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173741683129:android:e0119eed6860928d76c668",
+        "android_client_info": {
+          "package_name": "com.ece.steamappproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "173741683129-pac0seqvcpu3edhqski6c2ii5umqqcir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFPQ0tDvJLXlE-xjGZtnsxlnIvztAMb14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "173741683129-pac0seqvcpu3edhqski6c2ii5umqqcir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
