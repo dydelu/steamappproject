@@ -75,7 +75,7 @@ class _AccueilState extends State<Accueil> {
               itemBuilder: (context, index) {
                 final GamesDetails gameDetails = gamesDetails[index];
                 return Card(
-                  margin: EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(5),
                   color: c3,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,21 +97,21 @@ class _AccueilState extends State<Accueil> {
                               children: [
                                 Text(
                                   gameDetails.name,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,
                                   ),
                                 ),
                                 Text(
                                   'Price: ${gameDetails.price}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
                                   ),
                                 ),
                                 Text(
                                   'Publisher: ${gameDetails.publisher}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
                                   ),
@@ -119,8 +119,8 @@ class _AccueilState extends State<Accueil> {
                               ],
                             ),
                           ),
-                          Spacer(),
-                          Container(
+                          const Spacer(),
+                          SizedBox(
                             width: 80.0,
                             height: 100.0,
                             child: ElevatedButton(
@@ -161,9 +161,9 @@ class _AccueilState extends State<Accueil> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: const [
-              CircularProgressIndicator(),
-              Text("Veuillez patienter"),
-            ]),
+                  CircularProgressIndicator(),
+                  Text("Veuillez patienter"),
+                ]),
           );
         },
       ),

@@ -59,7 +59,7 @@ Future<List<GamesDetails>> fetchInfos(List<int> infoIds) async {
         String price;
 
         if (jsonGameFree == true) {
-          price = "0";
+          price = "Gratuit";
         } else {
           price = jsonGamePrice?['final_formatted'] ?? "";
         }
