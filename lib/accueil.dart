@@ -38,26 +38,24 @@ class _AccueilState extends State<Accueil> {
       backgroundColor: c1,
       appBar: AppBar(
         centerTitle: false,
-        title: const Text('Accueil',
-          style: TextStyle(fontFamily: 'GoogleSans'), ),
-
+        title: const Text(
+          'Accueil',
+          style: TextStyle(fontFamily: 'GoogleSans'),
+        ),
         titleSpacing: 15,
         backgroundColor: c1,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-              icon: SvgPicture.asset(
-                  'assets/icons/like.svg'),
+              icon: SvgPicture.asset('assets/icons/like.svg'),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Likes()),
                 );
-              }
-          ),
+              }),
           IconButton(
-            icon: SvgPicture.asset(
-                'assets/icons/whishlist.svg'),
+            icon: SvgPicture.asset('assets/icons/whishlist.svg'),
             onPressed: () {
               Navigator.push(
                 context,
@@ -87,26 +85,36 @@ class _AccueilState extends State<Accueil> {
                           SizedBox(
                             width: 100.0,
                             height: 100.0,
-                            child:  Image.network(gameDetails.headerImage),
+                            child: Image.network(gameDetails.headerImage),
                           ),
                           Container(
                             width: 190.0,
                             height: 100.0,
-                            padding: const EdgeInsets.only(left: 5, bottom: 5, top: 5),
+                            padding: const EdgeInsets.only(
+                                left: 5, bottom: 5, top: 5),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   gameDetails.name,
-                                  style: TextStyle(fontSize: 20, color: Colors.white,),
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
                                 ),
                                 Text(
                                   'Price: ${gameDetails.price}',
-                                  style: TextStyle(fontSize: 16, color: Colors.white,),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
                                 ),
                                 Text(
                                   'Publisher: ${gameDetails.publisher}',
-                                  style: TextStyle(fontSize: 16, color: Colors.white,),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ],
                             ),
@@ -115,29 +123,31 @@ class _AccueilState extends State<Accueil> {
                           Container(
                             width: 80.0,
                             height: 100.0,
-                            child:  ElevatedButton(
+                            child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(0.0),
                                 ),
-                                  backgroundColor: c2,
-                                  elevation: 0,
-                                  padding: const EdgeInsets.all(2),
-                                  textStyle: const TextStyle(fontSize: 18),
+                                backgroundColor: c2,
+                                elevation: 0,
+                                padding: const EdgeInsets.all(2),
+                                textStyle: const TextStyle(fontSize: 18),
                               ),
-                              child: const Text('En savoir plus', textAlign: TextAlign.center,),
+                              child: const Text(
+                                'En savoir plus',
+                                textAlign: TextAlign.center,
+                              ),
                               onPressed: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => Jeu()),
+                                  MaterialPageRoute(
+                                      builder: (context) => Jeu()),
                                 );
                               },
                             ),
                           ),
                         ],
                       ),
-
-
                     ],
                   ),
                 );
@@ -147,7 +157,13 @@ class _AccueilState extends State<Accueil> {
             return Text('${snapshot.error}');
           }
           return Center(
-            child: CircularProgressIndicator(),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+              CircularProgressIndicator(),
+              Text("Veuillez patienter"),
+            ]),
           );
         },
       ),

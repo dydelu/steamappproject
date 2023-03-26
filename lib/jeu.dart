@@ -8,6 +8,7 @@ import 'colors.dart';
 import 'wishlist.dart';
 import 'likes.dart';
 
+
 class Jeu extends StatefulWidget {
   @override
   _JeuState createState() => _JeuState();
@@ -16,9 +17,52 @@ class Jeu extends StatefulWidget {
 class _JeuState extends State<Jeu> {
   final database = FirebaseDatabase.instance.ref();
 
+  _JeuState();
+
+  initState(){
+    super.initState();
+  }
+
+  // Defining a variable for storing click state
+  bool isPressed = false;
+  bool isPressed2 = false;
+
+  // Click function for changing the state on click
+  _pressed(final listeJeu) {
+    var newVal = true;
+    if (isPressed) {
+      newVal = false;
+          listeJeu.child('Likes')
+          .push()
+          .set({'nom': 'JeuBlabla', 'price': 5 });
+    } else {
+      newVal = true;
+    }
+    // This function is required for changing the state.
+    // Whenever this function is called it refresh the page with new value
+    setState(() {
+      isPressed = newVal;
+    });
+  }
+    _pressed2(final listeJeu) {
+      var newVal2 = true;
+      if(isPressed2) {
+        newVal2 = false;
+        listeJeu.child('Wishlist')
+            .push()
+            .set({'nom': 'JeuBlabla', 'price': 5000 });
+      } else {
+        newVal2 = true;
+      }
+      setState((){
+        isPressed2 = newVal2;
+
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final listeJeu = database.child("wishlist/");
+    final listeJeu = database.child("Profil/");
 
     return Scaffold(
       backgroundColor: c1,
@@ -42,12 +86,12 @@ class _JeuState extends State<Jeu> {
         actions: [
           IconButton(
             icon: SvgPicture.asset(
-                'assets/icons/like.svg'),
-              onPressed: () async {
+      isPressed2  ? "assets/icons/like.svg" : "assets/icons/like_full.svg",
+          fit: BoxFit.fill,
+            ),
+          onPressed: () async {
                 try {
-                  await listeJeu.set({
-                    'nom': 'TEST', 'price': 3
-                  });
+                  _pressed2(listeJeu);
                   print('ajoute');
                 }catch(e){
                   print('error $e');
@@ -56,13 +100,17 @@ class _JeuState extends State<Jeu> {
           ),
           IconButton(
             icon: SvgPicture.asset(
-                'assets/icons/whishlist.svg'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Wishlist()),
-              );
-            },
+              isPressed  ? "assets/icons/whishlist.svg" : "assets/icons/whishlist_full.svg",
+              fit: BoxFit.fill,
+            ),
+              onPressed: () async {
+                try {
+                  _pressed(listeJeu);
+                  print('ajoute');
+                }catch(e){
+                  print('error $e');
+                }
+              }
           ),
         ],
       ),
