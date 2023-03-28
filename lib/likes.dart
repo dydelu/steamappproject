@@ -18,8 +18,7 @@ class Likes extends StatelessWidget {
         backgroundColor: c1,
         automaticallyImplyLeading: false,
         leading: IconButton(
-          icon: SvgPicture.asset(
-              'assets/icons/close.svg'),
+          icon: SvgPicture.asset('assets/icons/close.svg'),
           onPressed: () {
             Navigator.push(
               context,
@@ -31,7 +30,7 @@ class Likes extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children:  <Widget>[
+          children: <Widget>[
             Container(
               child: SvgPicture.asset("assets/icons/empty_likes.svg"),
             ),
