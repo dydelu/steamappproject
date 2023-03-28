@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'home.dart';
 import 'accueil.dart';
 import 'colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Inscription extends StatefulWidget {
   @override
@@ -10,6 +11,42 @@ class Inscription extends StatefulWidget {
 }
 
 class _InscriptionLoginState extends State<Inscription> {
+
+  final _nameTextController = TextEditingController();
+  final _emailTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+
+  static Future<User?> registerUsingEmailPassword({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+
+    try {
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      user = userCredential.user;
+      await user!.updateDisplayName(name);
+      await user.reload();
+      user = auth.currentUser;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    return user;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +54,7 @@ class _InscriptionLoginState extends State<Inscription> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-                '/Users/julesm/github/steamappproject/assets/images/bg.jpg'),
+                'assets/images/bg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -66,6 +103,7 @@ class _InscriptionLoginState extends State<Inscription> {
               padding: const EdgeInsets.only(
                   bottom: 10, top: 15, left: 30, right: 30),
               child: TextField(
+                controller: _nameTextController,
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
@@ -94,6 +132,7 @@ class _InscriptionLoginState extends State<Inscription> {
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: const EdgeInsets.only(bottom: 10, left: 30, right: 30),
               child: TextField(
+                controller: _emailTextController,
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
@@ -122,6 +161,7 @@ class _InscriptionLoginState extends State<Inscription> {
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: const EdgeInsets.only(bottom: 10, left: 30, right: 30),
               child: TextField(
+                controller: _passwordTextController,
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
@@ -182,10 +222,16 @@ class _InscriptionLoginState extends State<Inscription> {
                     backgroundColor: c2, //background color of button
                     elevation: 3, //elevation of button
                     padding:
-                        const EdgeInsets.all(30) //content padding inside button
-                    ),
+                    const EdgeInsets.all(30) //content padding inside button
+                ),
                 child: const Text("S'incrire"),
                 onPressed: () {
+                  registerUsingEmailPassword(
+                    name: _nameTextController.text,
+                    email: _emailTextController.text,
+                    password:
+                    _passwordTextController.text,
+                  );
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const Accueil()),
