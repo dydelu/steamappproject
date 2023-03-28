@@ -25,17 +25,26 @@ class _AccueilState extends State<Accueil> {
     _futureGames = fetchAllGamesDetails();
   }
 
-  Widget createTopCard(){
-    return  Card(
-      child: Image.asset(
-        'assets/images/trex.jpg',
-        fit: BoxFit.cover,
-        height: 100,
+  Widget createTopCard() {
+    return Card(
+      child: SizedBox(
+        width: 400.0,
+        height: 200.0,
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(
+                  'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
       ),
     );
   }
-  Widget createListView(BuildContext context, AsyncSnapshot snapshot){
-   return FutureBuilder<List<GamesDetails>>(
+
+  Widget createListView(BuildContext context, AsyncSnapshot snapshot) {
+    return FutureBuilder<List<GamesDetails>>(
       future: _futureGames,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -64,14 +73,14 @@ class _AccueilState extends State<Accueil> {
                           padding: const EdgeInsets.only(
                               left: 5, bottom: 5, top: 10),
                           child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 gameDetails.name,
                                 style: const TextStyle(
                                   fontSize: 18,
                                   color: Colors.white,
+                                  fontFamily: 'GoogleSans',
                                 ),
                               ),
                               Text(
@@ -79,6 +88,7 @@ class _AccueilState extends State<Accueil> {
                                 style: const TextStyle(
                                   fontSize: 14,
                                   color: Colors.white,
+                                  fontFamily: 'GoogleSans',
                                 ),
                               ),
                               Text(
@@ -86,6 +96,7 @@ class _AccueilState extends State<Accueil> {
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
+                                  fontFamily: 'GoogleSans',
                                 ),
                               ),
                             ],
@@ -98,23 +109,25 @@ class _AccueilState extends State<Accueil> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(0.0),
+                                borderRadius: BorderRadius.circular(0.0),
                               ),
                               backgroundColor: c2,
                               elevation: 0,
                               padding: const EdgeInsets.all(2),
-                              textStyle: const TextStyle(fontSize: 18),
                             ),
                             child: const Text(
                               'En savoir plus',
                               textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'GoogleSans',
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
                             ),
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => Jeu()),
+                                MaterialPageRoute(builder: (context) => Jeu()),
                               );
                             },
                           ),
@@ -139,7 +152,7 @@ class _AccueilState extends State<Accueil> {
               ]),
         );
       },
-   );
+    );
   }
 
   Future<List<GamesDetails>> fetchAllGamesDetails() async {
@@ -151,48 +164,65 @@ class _AccueilState extends State<Accueil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: c1,
+      appBar: AppBar(
+        centerTitle: false,
+        title: const Text(
+          'Accueil',
+          style: TextStyle(fontFamily: 'GoogleSans'),
+        ),
+        titleSpacing: 15,
         backgroundColor: c1,
-        appBar: AppBar(
-          centerTitle: false,
-          title: const Text(
-            'Accueil',
-            style: TextStyle(fontFamily: 'GoogleSans'),
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: SvgPicture.asset('assets/icons/like.svg'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Likes()),
+              );
+            },
           ),
-          titleSpacing: 15,
-          backgroundColor: c1,
-          automaticallyImplyLeading: false,
-          actions: [
-            IconButton(
-                icon: SvgPicture.asset('assets/icons/like.svg'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Likes()),
-                  );
-                }),
-            IconButton(
-              icon: SvgPicture.asset('assets/icons/whishlist.svg'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Wishlist()),
-                );
+          IconButton(
+            icon: SvgPicture.asset('assets/icons/whishlist.svg'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Wishlist()),
+              );
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          createTopCard(),
+          const Padding(
+            padding: EdgeInsets.only(top: 20, bottom: 10, left: 10),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Les meilleures ventes",
+                style: TextStyle(
+                  fontFamily: 'GoogleSans',
+                  fontSize: 15,
+                  color: Colors.white,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<List<GamesDetails>>(
+              future: _futureGames,
+              builder: (context, snapshot) {
+                return createListView(context, snapshot);
               },
             ),
-          ],
-        ),
-        body: Column(
-          children: [
-            createTopCard(),
-            Expanded(child:
-            FutureBuilder<List<GamesDetails>>(
-                future: _futureGames,
-                builder: (context, snapshot) {
-                    return createListView(context, snapshot);
-                }
-                )
-          )
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }
