@@ -188,7 +188,7 @@ class _InscriptionLoginState extends State<Inscription> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Accueil()),
+                    MaterialPageRoute(builder: (context) => const Accueil()),
                   );
                 },
               ),
