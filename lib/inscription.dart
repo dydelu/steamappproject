@@ -11,7 +11,6 @@ class Inscription extends StatefulWidget {
 }
 
 class _InscriptionLoginState extends State<Inscription> {
-
   final _nameTextController = TextEditingController();
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
@@ -20,6 +19,7 @@ class _InscriptionLoginState extends State<Inscription> {
     required String name,
     required String email,
     required String password,
+    required BuildContext context,
   }) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
@@ -53,8 +53,7 @@ class _InscriptionLoginState extends State<Inscription> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                'assets/images/bg.jpg'),
+            image: AssetImage('assets/images/bg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -222,20 +221,22 @@ class _InscriptionLoginState extends State<Inscription> {
                     backgroundColor: c2, //background color of button
                     elevation: 3, //elevation of button
                     padding:
-                    const EdgeInsets.all(30) //content padding inside button
-                ),
+                        const EdgeInsets.all(30) //content padding inside button
+                    ),
                 child: const Text("S'incrire"),
-                onPressed: () {
-                  registerUsingEmailPassword(
-                    name: _nameTextController.text,
-                    email: _emailTextController.text,
-                    password:
-                    _passwordTextController.text,
-                  );
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Accueil()),
-                  );
+                onPressed: () async {
+                  User? user = await registerUsingEmailPassword(
+                      name: _nameTextController.text,
+                      email: _emailTextController.text,
+                      password: _passwordTextController.text,
+                      context: context);
+                  print(user);
+                  if (user != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Accueil()),
+                    );
+                  }
                 },
               ),
             ),
