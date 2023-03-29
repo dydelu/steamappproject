@@ -5,9 +5,8 @@ import 'wishlist.dart';
 import 'likes.dart';
 import 'colors.dart';
 import 'model/JeuDetails.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Accueil extends StatefulWidget {
   const Accueil({Key? key}) : super(key: key);
@@ -30,14 +29,95 @@ class _AccueilState extends State<Accueil> {
       child: SizedBox(
         width: 400.0,
         height: 200.0,
-        child: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(
-                  'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif'),
-              fit: BoxFit.cover,
+        child: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/images/titanfall2.JPG', // Replace with your asset image path
+                  ),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-          ),
+            const Padding(
+              padding: EdgeInsets.only(left: 10, bottom: 55),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Titan Fall 2 \n Ultimate Edition',
+                  style: TextStyle(
+                    fontFamily: 'GoogleSans',
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 10, top: 35),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Titanfall 2 est un jeu vidéo de tir en vue \n à la première personne',
+                  style: TextStyle(
+                    fontFamily: 'GoogleSans',
+                    fontSize: 12,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 145),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    backgroundColor: c2,
+                    elevation: 0,
+                    padding: const EdgeInsets.only(
+                        top: 5, bottom: 5, left: 40, right: 40),
+                  ),
+                  child: const Text(
+                    'En savoir plus',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'GoogleSans',
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Jeu()),
+                    );
+                  },
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 10,
+              right: 10,
+              child: Container(
+                width: 100,
+                height: 120,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/ps4-titanfall2.JPG'),
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    repeat: ImageRepeat.noRepeat,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -75,28 +155,48 @@ class _AccueilState extends State<Accueil> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                gameDetails.name,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.white,
-                                  fontFamily: 'GoogleSans',
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(bottom: 5, left: 7),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    gameDetails.name,
+                                    style: const TextStyle(
+                                      fontFamily: 'GoogleSans',
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              Text(
-                                gameDetails.publisher,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                  fontFamily: 'GoogleSans',
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(bottom: 2, left: 7),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    gameDetails.publisher,
+                                    style: const TextStyle(
+                                      fontFamily: 'GoogleSans',
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              Text(
-                                gameDetails.price,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  fontFamily: 'GoogleSans',
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2, left: 7),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    gameDetails.price,
+                                    style: const TextStyle(
+                                      fontFamily: 'GoogleSans',
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
