@@ -25,21 +25,18 @@ class _AccueilState extends State<Accueil> {
     _futureGames = fetchAllGamesDetails();
   }
 
-  void useSearchBar(String query) {
+  void useSearchBar(String query) {}
 
-  }
-
-  Widget searchBar(){
+  Widget searchBar() {
     final _searchBar = TextEditingController();
 
     return Column(
       children: [
         Padding(
           //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-          padding: const EdgeInsets.only(
-              bottom: 10, top: 15, left: 30, right: 30),
+          padding:
+              const EdgeInsets.only(bottom: 10, top: 15, left: 30, right: 30),
           child: TextField(
-
             controller: _searchBar,
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.white),
@@ -278,7 +275,9 @@ class _AccueilState extends State<Accueil> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => Jeu(appid: gameDetails.id)),
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Jeu(appid: gameDetails.id)),
                               );
                             },
                           ),
@@ -303,7 +302,7 @@ class _AccueilState extends State<Accueil> {
               ]),
         );
       },
-   );
+    );
   }
 
   Future<List<GamesDetails>> fetchAllGamesDetails() async {
