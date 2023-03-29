@@ -20,8 +20,57 @@ class _AccueilState extends State<Accueil> {
 
   @override
   void initState() {
-    super.initState();
     _futureGames = fetchAllGamesDetails();
+    super.initState();
+  }
+
+  void useSearchBar(String query) {
+
+  }
+
+  Widget searchBar(){
+    final _searchBar = TextEditingController();
+
+    return Column(
+      children: [
+        Padding(
+          //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+          padding: const EdgeInsets.only(
+              bottom: 10, top: 15, left: 30, right: 30),
+          child: TextField(
+
+            controller: _searchBar,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              suffixIcon: IconButton(
+                icon: Icon(Icons.search),
+                color: c2,
+                onPressed: () {},
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(
+                  color: Colors.blueGrey.shade900,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: c2,
+                  width: 1.0,
+                ),
+              ),
+              filled: true,
+              fillColor: Colors.blueGrey.shade900,
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              border: const OutlineInputBorder(),
+              hintText: "Rechercher un jeu...",
+              hintStyle: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget createTopCard() {
@@ -214,6 +263,7 @@ class _AccueilState extends State<Accueil> {
                               backgroundColor: c2,
                               elevation: 0,
                               padding: const EdgeInsets.all(2),
+                              textStyle: const TextStyle(fontSize: 18),
                             ),
                             child: const Text(
                               'En savoir plus',
@@ -252,7 +302,7 @@ class _AccueilState extends State<Accueil> {
               ]),
         );
       },
-    );
+   );
   }
 
   Future<List<GamesDetails>> fetchAllGamesDetails() async {
@@ -297,6 +347,7 @@ class _AccueilState extends State<Accueil> {
       ),
       body: Column(
         children: [
+          searchBar(),
           createTopCard(),
           const Padding(
             padding: EdgeInsets.only(top: 20, bottom: 10, left: 10),
