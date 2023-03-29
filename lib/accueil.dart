@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:steamappproject/home.dart';
 import 'package:steamappproject/jeu.dart';
 import 'wishlist.dart';
 import 'likes.dart';
@@ -20,8 +21,8 @@ class _AccueilState extends State<Accueil> {
 
   @override
   void initState() {
-    _futureGames = fetchAllGamesDetails();
     super.initState();
+    _futureGames = fetchAllGamesDetails();
   }
 
   void useSearchBar(String query) {
@@ -144,7 +145,7 @@ class _AccueilState extends State<Accueil> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Jeu()),
+                      MaterialPageRoute(builder: (context) => Home()),
                     );
                   },
                 ),
@@ -277,7 +278,7 @@ class _AccueilState extends State<Accueil> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => Jeu()),
+                                MaterialPageRoute(builder: (context) => Jeu(appid: gameDetails.id)),
                               );
                             },
                           ),

@@ -8,8 +8,11 @@ import 'colors.dart';
 import 'wishlist.dart';
 import 'likes.dart';
 
-
 class Jeu extends StatefulWidget {
+  const Jeu({Key? key, required this.appid}) : super(key: key);
+
+  final int appid;
+
   @override
   _JeuState createState() => _JeuState();
 }
@@ -19,7 +22,7 @@ class _JeuState extends State<Jeu> {
 
   _JeuState();
 
-  initState(){
+  initState() {
     super.initState();
   }
 
@@ -32,9 +35,7 @@ class _JeuState extends State<Jeu> {
     var newVal = true;
     if (isPressed) {
       newVal = false;
-          listeJeu.child('Likes')
-          .push()
-          .set({'nom': 'JeuBlabla', 'price': 5 });
+      listeJeu.child('Likes').push().set({'nom': 'JeuBlabla', 'price': 5});
     } else {
       newVal = true;
     }
@@ -44,20 +45,167 @@ class _JeuState extends State<Jeu> {
       isPressed = newVal;
     });
   }
-    _pressed2(final listeJeu) {
-      var newVal2 = true;
-      if(isPressed2) {
-        newVal2 = false;
-        listeJeu.child('Wishlist')
-            .push()
-            .set({'nom': 'JeuBlabla', 'price': 5000 });
-      } else {
-        newVal2 = true;
-      }
-      setState((){
-        isPressed2 = newVal2;
 
-      });
+  _pressed2(final listeJeu) {
+    var newVal2 = true;
+    if (isPressed2) {
+      newVal2 = false;
+      listeJeu
+          .child('Wishlist')
+          .push()
+          .set({'nom': 'JeuBlabla', 'price': 5000});
+    } else {
+      newVal2 = true;
+    }
+    setState(() {
+      isPressed2 = newVal2;
+    });
+  }
+
+  Widget createDetails() {
+    return Column(children: [
+      Stack(
+        children: <Widget>[
+
+          // The containers in the background
+          new Column(
+            children: <Widget>[
+
+              new Container(
+                height: MediaQuery.of(context).size.height * .30,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/titanfall2.JPG'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+              new Container(
+              height: MediaQuery.of(context).size.height * .55,
+              color: c1,
+              )
+            ],
+          ),
+          // The card widget with top padding,
+          // incase if you wanted bottom padding to work,
+          // set the `alignment` of container to Alignment.bottomCenter
+          new Container(
+            alignment: Alignment.topCenter,
+            padding: new EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * .20,
+                right: 20.0,
+                left: 20.0),
+            child: new  Card(
+              margin: const EdgeInsets.all(5),
+              color: c3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${widget.appid}',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 100.0,
+                        height: 100.0,
+                        child: Image.network(''),
+                      ),
+                      Container(
+                        width: 190.0,
+                        height: 100.0,
+                        padding: const EdgeInsets.only(left: 5, bottom: 5, top: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 5, left: 7),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Nom du jeu',
+                                  style: const TextStyle(
+                                    fontFamily: 'GoogleSans',
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 2, left: 7),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Nom de l'éditeur",
+                                  style: const TextStyle(
+                                    fontFamily: 'GoogleSans',
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            )
+          ),
+           Container(
+               alignment: Alignment.topCenter,
+              padding: new EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * .4,
+                  right: 5.0,
+                  left: 5.0),
+               child: DefaultTabController(
+                 length: 6, // length of tabs
+                 initialIndex: 0,
+                 child: TabBar(
+                   padding: EdgeInsets.zero,
+                   indicatorPadding: EdgeInsets.zero,
+                   labelPadding: EdgeInsets.zero,
+                   labelColor: c2,
+                   unselectedLabelColor: c2,
+                   indicatorSize: TabBarIndicatorSize.label,
+                   indicator: BoxDecoration(
+                       color: c2),
+                   tabs: [
+                     Tab(
+                       child: Container(
+                         decoration: BoxDecoration(
+                             border: Border.all(color: c2, width: 1)),
+                         child: Align(
+                           alignment: Alignment.center,
+                           child: Text("Description", style: TextStyle(color: Colors.white),),
+
+                         ),
+                       ),
+                     ),
+                     Tab(
+                       child: Container(
+                         decoration: BoxDecoration(
+                             border: Border.all(color: c2, width: 1)),
+                         child: Align(
+                           alignment: Alignment.center,
+                           child: Text("Avis", style: TextStyle(color: Colors.white),),
+                         ),
+                       ),
+                     ),
+                   ],
+                 ),
+               ),
+
+          ),
+        ],
+      ),
+
+    ]);
   }
 
   @override
@@ -74,8 +222,7 @@ class _JeuState extends State<Jeu> {
         backgroundColor: c1,
         automaticallyImplyLeading: false,
         leading: IconButton(
-          icon: SvgPicture.asset(
-              'assets/icons/back.svg'),
+          icon: SvgPicture.asset('assets/icons/back.svg'),
           onPressed: () {
             Navigator.push(
               context,
@@ -85,33 +232,35 @@ class _JeuState extends State<Jeu> {
         ),
         actions: [
           IconButton(
-            icon: SvgPicture.asset(
-      isPressed2  ? "assets/icons/like.svg" : "assets/icons/like_full.svg",
-          fit: BoxFit.fill,
-            ),
-          onPressed: () async {
+              icon: SvgPicture.asset(
+                isPressed2
+                    ? "assets/icons/like.svg"
+                    : "assets/icons/like_full.svg",
+                fit: BoxFit.fill,
+              ),
+              onPressed: () async {
                 try {
                   _pressed2(listeJeu);
                   print('ajoute');
-                }catch(e){
+                } catch (e) {
                   print('error $e');
                 }
-              }
-          ),
+              }),
           IconButton(
-            icon: SvgPicture.asset(
-              isPressed  ? "assets/icons/whishlist.svg" : "assets/icons/whishlist_full.svg",
-              fit: BoxFit.fill,
-            ),
+              icon: SvgPicture.asset(
+                isPressed
+                    ? "assets/icons/whishlist.svg"
+                    : "assets/icons/whishlist_full.svg",
+                fit: BoxFit.fill,
+              ),
               onPressed: () async {
                 try {
                   _pressed(listeJeu);
                   print('ajoute');
-                }catch(e){
+                } catch (e) {
                   print('error $e');
                 }
-              }
-          ),
+              }),
         ],
       ),
       body: Center(
@@ -122,26 +271,8 @@ class _JeuState extends State<Jeu> {
               width: 200,
               margin: const EdgeInsets.only(
                   bottom: 10, top: 15, left: 30, right: 30),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: c2, //background color of button
-                    elevation: 3, //elevation of button
-                    padding:
-                    const EdgeInsets.all(30) //content padding inside button
-                ),
-                child: const Text('test DB'),
-                onPressed: () async {
-                  try {
-                   await listeJeu.set({
-                      'nom': 'TEST', 'price': 3
-                    });
-                   print('ajoute');
-                  }catch(e){
-                    print('error $e');
-                  }
-                      }
-                  ),
-              ),
+            ),
+            createDetails()
           ],
         ),
       ),

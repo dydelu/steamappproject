@@ -29,6 +29,11 @@ class GamesDetails {
   final String publisher;
   final String headerImage;
 
+
+int get id{
+  return appid;
+}
+
   GamesDetails(
       {required this.appid,
       required this.name,
