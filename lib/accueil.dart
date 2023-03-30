@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:steamappproject/home.dart';
 import 'package:steamappproject/jeu.dart';
+import 'package:steamappproject/models/simpleJeuDetails.dart';
 import 'wishlist.dart';
 import 'likes.dart';
 import 'colors.dart';
-import 'model/JeuDetails.dart';
-import 'package:bloc/bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'models/JeuDetails.dart';
 
 class Accueil extends StatefulWidget {
   const Accueil({Key? key}) : super(key: key);
@@ -27,6 +26,21 @@ class _AccueilState extends State<Accueil> {
 
   void useSearchBar(String query) {}
 
+  final SimpleJeuDetails steamApi = SimpleJeuDetails();
+  TextEditingController _searchBar = TextEditingController();
+  List<dynamic> _searchResults = [];
+
+  void _searchGames() async {
+    try {
+      final results = await steamApi.searchGames(_searchBar.text);
+      setState(() {
+        _searchResults = results;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Widget searchBar() {
     final _searchBar = TextEditingController();
 
@@ -44,7 +58,7 @@ class _AccueilState extends State<Accueil> {
               suffixIcon: IconButton(
                 icon: Icon(Icons.search),
                 color: c2,
-                onPressed: () {},
+                onPressed: _searchGames,
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
@@ -65,8 +79,19 @@ class _AccueilState extends State<Accueil> {
               hintText: "Rechercher un jeu...",
               hintStyle: const TextStyle(color: Colors.white),
             ),
+            onSubmitted: (value) => _searchGames(),
           ),
         ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _searchResults.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(_searchResults[index]['name']),
+              );
+            },
+          ),
+        )
       ],
     );
   }

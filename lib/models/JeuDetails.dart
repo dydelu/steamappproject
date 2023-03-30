@@ -6,7 +6,7 @@ Future<List<int>> fetchAllGames() async {
       'https://api.steampowered.com/ISteamChartsService/GetMostPlayedGames/v1/?'));
 
   if (response.statusCode == 200) {
-    final Map<String, dynamic> jsonResponse = json.decode(response.body);
+    Map<String, dynamic> jsonResponse = json.decode(response.body);
     final List<dynamic> ranks = jsonResponse['response']['ranks'];
     final List<int> appids = ranks.map((rank) => rank['appid'] as int).toList();
     // ignore: unnecessary_null_comparison
