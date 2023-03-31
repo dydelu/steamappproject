@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:steamappproject/accueil.dart';
 import 'home.dart';
 import 'colors.dart';
-import 'model/JeuDetails.dart';
+import 'models/JeuDetails.dart';
 import 'likes.dart';
 
 class Jeu extends StatefulWidget {
@@ -63,6 +63,123 @@ class _JeuState extends State<Jeu> {
     });
   }
 
+  Widget _tabSection(BuildContext context, GamesDetails gameDetails) {
+    return DefaultTabController(
+      length: 2,
+      child: Column(children: <Widget>[
+        Container(
+          child: TabBar(
+              padding: EdgeInsets.zero,
+              indicatorPadding: EdgeInsets.zero,
+              labelPadding: EdgeInsets.zero,
+              labelColor: c2,
+              unselectedLabelColor: c2,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicator: BoxDecoration(color: c2),
+              tabs: [
+                Tab(
+                  child: Container(
+                    decoration:
+                        BoxDecoration(border: Border.all(color: c2, width: 1)),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Description",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Container(
+                    decoration:
+                        BoxDecoration(border: Border.all(color: c2, width: 1)),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Avis",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ]),
+        ),
+        Container(
+          constraints: const BoxConstraints(
+            maxHeight: 1500,
+          ),
+          child: TabBarView(children: [
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                gameDetails.description,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Container(
+                child: Card(
+              margin: const EdgeInsets.all(5),
+              color: c3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 350.0,
+                        padding:
+                            const EdgeInsets.only(left: 5, bottom: 5, top: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 5, left: 7),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Jean Denis",
+                                  style: const TextStyle(
+                                    fontFamily: 'GoogleSans',
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 2, left: 7),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                 "Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu,",
+                                  style: const TextStyle(
+                                    fontFamily: 'GoogleSans',
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ))
+          ]),
+        ),
+      ]),
+    );
+  }
+
   Widget createDetails(BuildContext context, AsyncSnapshot snapshot) {
     return FutureBuilder<GamesDetails>(
         future: _futureGame,
@@ -72,43 +189,36 @@ class _JeuState extends State<Jeu> {
             return Column(children: [
               Stack(
                 children: <Widget>[
-                   Column(
+                  Column(
                     children: <Widget>[
-                       Container(
+                      Container(
                         height: MediaQuery.of(context).size.height * .30,
-                            child: Image.network(gameDetails.headerImage),
+                        child: Image.network(gameDetails.headerImage),
                       ),
-                       Container(
+                      Container(
                         height: MediaQuery.of(context).size.height * .55,
                         color: c1,
                       )
                     ],
                   ),
-                  // The card widget with top padding,
-                  // incase if you wanted bottom padding to work,
-                  // set the `alignment` of container to Alignment.bottomCenter
-                   Container(
+                  Container(
                       alignment: Alignment.topCenter,
-                      padding:  EdgeInsets.only(
+                      padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.height * .20,
                           right: 20.0,
                           left: 20.0),
-                      child:  Card(
+                      child: Card(
                         margin: const EdgeInsets.all(5),
                         color: c3,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              '${widget.appid}',
-                              style: TextStyle(fontSize: 24),
-                            ),
                             Row(
                               children: [
                                 SizedBox(
                                   width: 100.0,
                                   height: 100.0,
-                                  child: Image.network(''),
+                                  child: Image.network(gameDetails.headerImage),
                                 ),
                                 Container(
                                   width: 190.0,
@@ -158,54 +268,12 @@ class _JeuState extends State<Jeu> {
                         ),
                       )),
                   Container(
-                    alignment: Alignment.topCenter,
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * .4,
-                        right: 5.0,
-                        left: 5.0),
-                    child: DefaultTabController(
-                      length: 6, // length of tabs
-                      initialIndex: 0,
-                      child: TabBar(
-                        padding: EdgeInsets.zero,
-                        indicatorPadding: EdgeInsets.zero,
-                        labelPadding: EdgeInsets.zero,
-                        labelColor: c2,
-                        unselectedLabelColor: c2,
-                        indicatorSize: TabBarIndicatorSize.label,
-                        indicator: BoxDecoration(color: c2),
-                        tabs: [
-                          Tab(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: c2, width: 1)),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Description",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Tab(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: c2, width: 1)),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Avis",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                    ),
-                  ),
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * .4,
+                          right: 10.0,
+                          left: 10.0),
+                      child: _tabSection(context, gameDetails)),
                 ],
               )
             ]);
@@ -290,16 +358,17 @@ class _JeuState extends State<Jeu> {
           children: <Widget>[
             Container(
               width: 200,
-              margin: const EdgeInsets.only(
-                  bottom: 10, top: 15, left: 30, right: 30),
+              margin:
+                  const EdgeInsets.only(bottom: 0, top: 0, left: 30, right: 30),
             ),
             Expanded(
-              child: FutureBuilder<GamesDetails>(
+                child: ListView(shrinkWrap: true, children: [
+              FutureBuilder<GamesDetails>(
                   future: _futureGame,
                   builder: (context, snapshot) {
                     return createDetails(context, snapshot);
                   }),
-            )
+            ]))
           ],
         ),
       ),

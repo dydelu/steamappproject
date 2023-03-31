@@ -58,6 +58,11 @@ Future<List<GamesDetails>> fetchInfos(List<int> infoIds) async {
         final String name = gameData['name'];
         final String headerImage = gameData['header_image'];
         final String description = gameData['detailed_description'];
+
+        RegExp exp = RegExp(r"<[^>]*>",multiLine: true,caseSensitive: true);
+        String parsedDescription = description.replaceAll(exp, ' ');
+
+
         final List<dynamic> publishers = gameData['publishers'];
         final String publisher = publishers.join(', ');
         final bool? jsonGameFree = gameData['is_free'];
@@ -73,7 +78,7 @@ Future<List<GamesDetails>> fetchInfos(List<int> infoIds) async {
         final GamesDetails jeu = GamesDetails(
             appid: appid,
             name: name,
-            description: description,
+            description: parsedDescription,
             publisher: publisher,
             price: price,
             headerImage: headerImage);
@@ -100,6 +105,11 @@ Future<GamesDetails> fetchSingleInfos(int appid) async {
       if (gameData != null) {
         final String name = gameData['name'];
         final String description = gameData['detailed_description'];
+
+        RegExp exp = RegExp(r"<[^>]*>",multiLine: true,caseSensitive: true);
+        String parsedDescription = description.replaceAll(exp, ' ');
+
+
         final String headerImage = gameData['header_image'];
         final List<dynamic> publishers = gameData['publishers'];
         final String publisher = publishers.join(', ');
@@ -116,7 +126,7 @@ Future<GamesDetails> fetchSingleInfos(int appid) async {
         final GamesDetails jeu = GamesDetails(
             appid: appid,
             name: name,
-            description: description,
+            description: parsedDescription,
             publisher: publisher,
             price: price,
             headerImage: headerImage);

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:steamappproject/home.dart';
 import 'package:steamappproject/jeu.dart';
-import 'package:steamappproject/models/simpleJeuDetails.dart';
 import 'wishlist.dart';
 import 'likes.dart';
 import 'colors.dart';
 import 'models/JeuDetails.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Accueil extends StatefulWidget {
   const Accueil({Key? key}) : super(key: key);
@@ -24,32 +25,18 @@ class _AccueilState extends State<Accueil> {
     _futureGames = fetchAllGamesDetails();
   }
 
-  void useSearchBar(String query) {}
+  void useSearchBar(String query) {
 
-  final SimpleJeuDetails steamApi = SimpleJeuDetails();
-  TextEditingController _searchBar = TextEditingController();
-  List<dynamic> _searchResults = [];
-
-  void _searchGames() async {
-    try {
-      final results = await steamApi.searchGames(_searchBar.text);
-      setState(() {
-        _searchResults = results;
-      });
-    } catch (e) {
-      print(e);
-    }
   }
 
-  Widget searchBar() {
+  Widget searchBar(){
     final _searchBar = TextEditingController();
-
     return Column(
       children: [
         Padding(
           //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-          padding:
-              const EdgeInsets.only(bottom: 10, top: 15, left: 30, right: 30),
+          padding: const EdgeInsets.only(
+              bottom: 10, top: 15, left: 30, right: 30),
           child: TextField(
             controller: _searchBar,
             textAlign: TextAlign.center,
@@ -58,7 +45,7 @@ class _AccueilState extends State<Accueil> {
               suffixIcon: IconButton(
                 icon: Icon(Icons.search),
                 color: c2,
-                onPressed: _searchGames,
+                onPressed: () {},
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
@@ -79,19 +66,8 @@ class _AccueilState extends State<Accueil> {
               hintText: "Rechercher un jeu...",
               hintStyle: const TextStyle(color: Colors.white),
             ),
-            onSubmitted: (value) => _searchGames(),
           ),
         ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: _searchResults.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(_searchResults[index]['name']),
-              );
-            },
-          ),
-        )
       ],
     );
   }
@@ -300,9 +276,7 @@ class _AccueilState extends State<Accueil> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        Jeu(appid: gameDetails.id)),
+                                MaterialPageRoute(builder: (context) => Jeu(appid: gameDetails.id)),
                               );
                             },
                           ),
@@ -327,7 +301,7 @@ class _AccueilState extends State<Accueil> {
               ]),
         );
       },
-    );
+   );
   }
 
   Future<List<GamesDetails>> fetchAllGamesDetails() async {
