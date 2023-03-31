@@ -16,7 +16,7 @@ class _InscriptionLoginState extends State<Inscription> {
   final _emailTextController = TextEditingController();
   final _passwordTextController = TextEditingController();
 
-  static Future<User?> registerUsingEmailPassword({
+  static Future<User?> registerUsingEmailPassword({  //https://firebase.google.com/docs/auth/flutter/password-auth
     required String name,
     required String email,
     required String password,
@@ -46,7 +46,6 @@ class _InscriptionLoginState extends State<Inscription> {
 
     return user;
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
