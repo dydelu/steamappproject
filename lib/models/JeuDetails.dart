@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:bloc/bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<List<int>> fetchAllGames() async {
   final response = await http.get(Uri.parse(
       'https://api.steampowered.com/ISteamChartsService/GetMostPlayedGames/v1/?'));
 
   if (response.statusCode == 200) {
-    final Map<String, dynamic> jsonResponse = json.decode(response.body);
+    Map<String, dynamic> jsonResponse = json.decode(response.body);
     final List<dynamic> ranks = jsonResponse['response']['ranks'];
     final List<int> appids = ranks.map((rank) => rank['appid'] as int).toList();
     // ignore: unnecessary_null_comparison
@@ -30,10 +28,9 @@ class GamesDetails {
   final String publisher;
   final String headerImage;
 
-
-int get id{
-  return appid;
-}
+  int get id {
+    return appid;
+  }
 
   GamesDetails(
       {required this.appid,
