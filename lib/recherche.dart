@@ -1,50 +1,60 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'home.dart';
+import 'wishlist.dart';
+import 'likes.dart';
+import 'colors.dart';
 import 'accueil.dart';
 import 'models/JeuDetails.dart';
-import 'jeu.dart';
-import 'colors.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class Wishlist extends StatefulWidget {
+class Recherche extends StatefulWidget {
+  const Recherche({Key? key, required this.query}) : super(key: key);
+  final String? query;
+
   @override
-  _WishlistState createState() => _WishlistState();
+  _RechercheState createState() => _RechercheState();
 }
 
-class _WishlistState extends State<Wishlist> {
-  late Future<List<GamesDetails>> _futureWishlistGames;
-  final database = FirebaseDatabase.instance.ref();
-  String? wishlistState;
+class _RechercheState extends State<Recherche> {
+  late Future<List<GamesDetails>> _futureRechercheGames;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
- //   _futureWishlistGames = fetchWishlistGamesDetails();
+    // _search();
+    _futureRechercheGames = fetchSearchGamesDetails();
   }
 
-  void _activateListeners() {
-
+  Future<List<int>> _search() async {
+    final response = await http.get(Uri.parse(
+        'https://steamcommunity.com/actions/SearchApps/${widget.query}'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map<int>((game) => int.parse(game['appid'])).toList();
+    } else {
+      throw Exception('Failed to load search results');
+    }
   }
 
- /* Future<List<GamesDetails>> fetchWishlistGamesDetails() async {
-    final List<int> appids = await fetchWishlistGames();
+  Future<List<GamesDetails>> fetchSearchGamesDetails() async {
+    final List<int> appids = await _search();
     final List<GamesDetails> gamesDetails = await fetchInfos(appids);
     return gamesDetails;
-  }*/
+  }
 
-
-  Widget createWishlistView(BuildContext context, AsyncSnapshot snapshot) {
+  Widget createListResults(BuildContext context, AsyncSnapshot snapshot) {
     return FutureBuilder<List<GamesDetails>>(
-      future: _futureWishlistGames,
+      future: _futureRechercheGames,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          final List<GamesDetails> gamesDetails = snapshot.data!;
+          final List<GamesDetails> resultsDetails = snapshot.data!;
           return ListView.builder(
             shrinkWrap: true,
-            itemCount: gamesDetails.length < 15 ? gamesDetails.length : 15,
+            itemCount: resultsDetails.length,
             itemBuilder: (context, index) {
-              final GamesDetails gameDetails = gamesDetails[index];
+              final GamesDetails gameDetails = resultsDetails[index];
               return Card(
                 margin: const EdgeInsets.all(5),
                 color: c3,
@@ -68,7 +78,7 @@ class _WishlistState extends State<Wishlist> {
                             children: [
                               Padding(
                                 padding:
-                                const EdgeInsets.only(bottom: 5, left: 7),
+                                    const EdgeInsets.only(bottom: 5, left: 7),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
@@ -83,7 +93,7 @@ class _WishlistState extends State<Wishlist> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.only(bottom: 2, left: 7),
+                                    const EdgeInsets.only(bottom: 2, left: 7),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
@@ -140,8 +150,7 @@ class _WishlistState extends State<Wishlist> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        Jeu(appid: gameDetails.id)),
+                                    builder: (context) => Accueil()),
                               );
                             },
                           ),
@@ -169,89 +178,95 @@ class _WishlistState extends State<Wishlist> {
     );
   }
 
+  Widget searchBar() {
+    final _searchBar = TextEditingController();
+    return Column(
+      children: [
+        Padding(
+          //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
+          padding:
+              const EdgeInsets.only(bottom: 10, top: 15, left: 30, right: 30),
+          child: TextField(
+            controller: _searchBar,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              suffixIcon: IconButton(
+                icon: Icon(Icons.search),
+                color: c2,
+                onPressed: () {
+                  fetchSearchGamesDetails();
+                },
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(
+                  color: Colors.blueGrey.shade900,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: c2,
+                  width: 1.0,
+                ),
+              ),
+              filled: true,
+              fillColor: Colors.blueGrey.shade900,
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+              border: const OutlineInputBorder(),
+              hintText: "Rechercher un jeu...",
+              hintStyle: const TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final wishlist = database.child('wishlist/');
-
     return Scaffold(
-      backgroundColor: c1,
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text('Ma Liste de souhaits',
-            style: TextStyle(fontFamily: 'GoogleSans')),
-        titleSpacing: 0,
         backgroundColor: c1,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: SvgPicture.asset('assets/icons/close.svg'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Accueil()),
-            );
-          },
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: StreamBuilder(
-                  stream: database
-                      .child("wishlist")
-                      .orderByKey()
-                      .onValue,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-
-                      return ListView(
-
-                      );
-                      //return createWishlistView(context, snapshot);
-                    } else {
-                      return Column(children: <Widget>[
-                        Container(
-                          child: SvgPicture.asset(
-                              "assets/icons/empty_whishlist.svg"),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 30,
-                            right: 30,
-                            bottom: 25,
-                          ),
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Column(children: const [
-                              SizedBox(
-                                width: 300,
-                                height: 100,
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Vous n'avez pas liké de contenu. Cliquez sur l'étoile pour en rajouter.",
-                                    maxLines: 2,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: "GoogleSans",
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ]),
-                          ),
-                        ),
-                      ]);
-                    }
-                  }
-              ),
+        appBar: AppBar(
+          centerTitle: false,
+          title: const Text(
+            'Recherche',
+            style: TextStyle(fontFamily: 'GoogleSans'),
+          ),
+          titleSpacing: 15,
+          backgroundColor: c1,
+          automaticallyImplyLeading: false,
+          actions: [
+            IconButton(
+              icon: SvgPicture.asset('assets/icons/like.svg'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Likes()),
+                );
+              },
+            ),
+            IconButton(
+              icon: SvgPicture.asset('assets/icons/whishlist.svg'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Wishlist()),
+                );
+              },
             ),
           ],
         ),
-      ),
-    );
+        body: Column(children: [
+          searchBar(),
+          Expanded(
+            child: FutureBuilder<List<GamesDetails>>(
+              future: _futureRechercheGames,
+              builder: (context, snapshot) {
+                return createListResults(context, snapshot);
+              },
+            ),
+          ),
+        ]));
   }
 }

@@ -30,13 +30,18 @@ class _JeuState extends State<Jeu> {
   // Defining a variable for storing click state
   bool isPressed = false;
   bool isPressed2 = false;
+  String? appId;
+
+  void setDatabaseId(String id) {
+    appId = id;
+  }
 
   // Click function for changing the state on click
-  _pressed(final listeJeu) {
+  _pressed(final listeJeu, String? id) {
     var newVal = true;
     if (isPressed) {
       newVal = false;
-      listeJeu.child('Likes').push().set({'nom': 'JeuBlabla', 'price': 5});
+      listeJeu.child('Likes').push().set({'ID': id});
     } else {
       newVal = true;
     }
@@ -47,14 +52,11 @@ class _JeuState extends State<Jeu> {
     });
   }
 
-  _pressed2(final listeJeu) {
+  _pressed2(final listeJeu, String? id) {
     var newVal2 = true;
     if (isPressed2) {
       newVal2 = false;
-      listeJeu
-          .child('Wishlist')
-          .push()
-          .set({'nom': 'JeuBlabla', 'price': 5000});
+      listeJeu.child('Wishlist').push().set({'ID': id});
     } else {
       newVal2 = true;
     }
@@ -136,28 +138,33 @@ class _JeuState extends State<Jeu> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(bottom: 5, left: 7),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "Jean Denis",
-                                  style: const TextStyle(
-                                    fontFamily: 'GoogleSans',
-                                    fontSize: 15,
-                                    color: Colors.white,
+                            Row(children: <Widget>[
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(bottom: 5, left: 7),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Jean Denis",
+                                    style: const TextStyle(
+                                      fontFamily: 'GoogleSans',
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                              SizedBox(width: 130,),
+                              Image.asset('assets/images/stars.png', height: 100,
+                                  width: 100),
+                            ]),
                             Padding(
                               padding:
                                   const EdgeInsets.only(bottom: 2, left: 7),
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                 "Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu,",
+                                  "Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu,",
                                   style: const TextStyle(
                                     fontFamily: 'GoogleSans',
                                     fontSize: 15,
@@ -186,6 +193,7 @@ class _JeuState extends State<Jeu> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final GamesDetails gameDetails = snapshot.data!;
+            setDatabaseId(gameDetails.appid.toString());
             return Column(children: [
               Stack(
                 children: <Widget>[
@@ -329,7 +337,7 @@ class _JeuState extends State<Jeu> {
               ),
               onPressed: () async {
                 try {
-                  _pressed2(listeJeu);
+                  _pressed2(listeJeu, appId);
                   print('ajoute');
                 } catch (e) {
                   print('error $e');
@@ -344,7 +352,7 @@ class _JeuState extends State<Jeu> {
               ),
               onPressed: () async {
                 try {
-                  _pressed(listeJeu);
+                  _pressed(listeJeu, appId);
                   print('ajoute');
                 } catch (e) {
                   print('error $e');

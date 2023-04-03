@@ -19,6 +19,10 @@ Future<List<int>> fetchAllGames() async {
     throw Exception('Failed to load data');
   }
 }
+/*
+Future<List<int>> fetchWishlistGames() async {
+
+}*/
 
 class GamesDetails {
   final int appid;
