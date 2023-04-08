@@ -1,3 +1,5 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'home.dart';
@@ -5,7 +7,30 @@ import 'accueil.dart';
 import 'jeu.dart';
 import 'colors.dart';
 
-class Likes extends StatelessWidget {
+class Likes extends StatefulWidget {
+  const Likes({Key? key}) : super(key: key);
+
+  @override
+  _LikesState createState() => _LikesState();
+}
+
+class _LikesState extends State<Likes> {
+  Map<int, Map<dynamic, dynamic>> _likedGames = {};
+  bool _dataLoaded = false;
+
+  final database = FirebaseDatabase.instance.ref();
+
+  @override
+  void initState() {
+    super.initState();
+
+  }
+  //
+  // Future<int> getLikes(String gameId) async {
+  //   DataSnapshot snapshot = await database.child("Profil").once();
+  //   return snapshot.value;
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

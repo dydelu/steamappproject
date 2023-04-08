@@ -195,7 +195,8 @@ class _RechercheState extends State<Recherche> {
                 icon: Icon(Icons.search),
                 color: c2,
                 onPressed: () {
-                  fetchSearchGamesDetails();
+                  Navigator.push( context,
+                  MaterialPageRoute(builder: (context) => Recherche(query: _searchBar.text)),);
                 },
               ),
               enabledBorder: OutlineInputBorder(
@@ -228,6 +229,15 @@ class _RechercheState extends State<Recherche> {
     return Scaffold(
         backgroundColor: c1,
         appBar: AppBar(
+          leading: IconButton(
+            icon: SvgPicture.asset('assets/icons/close.svg'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Accueil()),
+              );
+            },
+          ),
           centerTitle: false,
           title: const Text(
             'Recherche',
@@ -236,26 +246,6 @@ class _RechercheState extends State<Recherche> {
           titleSpacing: 15,
           backgroundColor: c1,
           automaticallyImplyLeading: false,
-          actions: [
-            IconButton(
-              icon: SvgPicture.asset('assets/icons/like.svg'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Likes()),
-                );
-              },
-            ),
-            IconButton(
-              icon: SvgPicture.asset('assets/icons/whishlist.svg'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Wishlist()),
-                );
-              },
-            ),
-          ],
         ),
         body: Column(children: [
           searchBar(),

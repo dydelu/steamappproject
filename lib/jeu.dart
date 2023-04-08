@@ -22,47 +22,95 @@ class _JeuState extends State<Jeu> {
 
   _JeuState();
 
+  @override
   initState() {
-    _futureGame = fetchGamesDetails(widget.appid);
     super.initState();
+    _futureGame = getJeuDetails(widget.appid);
+    getLiked(widget.appid);
+    getWishlisted(widget.appid);
   }
 
-  // Defining a variable for storing click state
-  bool isPressed = false;
-  bool isPressed2 = false;
+  bool isPressed = true;
+  bool isPressed2 = true;
   String? appId;
 
   void setDatabaseId(String id) {
     appId = id;
   }
 
-  // Click function for changing the state on click
   _pressed(final listeJeu, String? id) {
-    var newVal = true;
-    if (isPressed) {
-      newVal = false;
-      listeJeu.child('Likes').push().set({'ID': id});
-    } else {
-      newVal = true;
-    }
-    // This function is required for changing the state.
-    // Whenever this function is called it refresh the page with new value
     setState(() {
-      isPressed = newVal;
+      isPressed = !isPressed;
     });
+    if (isPressed) {
+      listeJeu.child(id.toString()).child("Wishlist").set({'wishlisted': true});
+      print('added');
+    } else {
+      listeJeu.child(id.toString()).child("Wishlist").remove();
+      print('supp');
+    }
+
+
   }
 
   _pressed2(final listeJeu, String? id) {
-    var newVal2 = true;
-    if (isPressed2) {
-      newVal2 = false;
-      listeJeu.child('Wishlist').push().set({'ID': id});
-    } else {
-      newVal2 = true;
-    }
     setState(() {
-      isPressed2 = newVal2;
+      isPressed2 = !isPressed2;
     });
+    if (isPressed2) {
+      listeJeu.child(id.toString()).child("Likes").set({'liked': true});
+      print('added');
+    } else {
+      listeJeu.child(id.toString()).child("Likes").remove();
+      print('supp');
+    }
+
+  }
+
+  Future<void> getLiked(int id) async {
+    try {
+      database.child("Profil/").child(id.toString()).child("Wishlist").once().then((DatabaseEvent event) {
+        DataSnapshot snapshot = event.snapshot;
+        if (snapshot.exists) {
+          setState(() {
+            isPressed2 = true;
+
+          });
+        } else {
+          setState(() {
+            isPressed2 = false;
+
+          });
+        }
+      }).catchError((error) {
+        print("Error: $error");
+      });
+    } catch (error) {
+      print("Erreur $error");
+    }
+  }
+
+  Future<void> getWishlisted(int id) async {
+    try {
+      database.child("Profil/").child(id.toString()).child("Likes").once().then((DatabaseEvent event) {
+        DataSnapshot snapshot = event.snapshot;
+        if (snapshot.exists) {
+          setState(() {
+            isPressed = true;
+
+          });
+        } else {
+          setState(() {
+            isPressed = false;
+
+          });
+        }
+      }).catchError((error) {
+        print("Error: $error");
+      });
+    } catch (error) {
+      print("Erreur $error");
+    }
   }
 
   Widget _tabSection(BuildContext context, GamesDetails gameDetails) {
@@ -139,14 +187,14 @@ class _JeuState extends State<Jeu> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(children: <Widget>[
-                              Padding(
+                              const Padding(
                                 padding:
-                                    const EdgeInsets.only(bottom: 5, left: 7),
+                                    EdgeInsets.only(bottom: 5, left: 7),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     "Jean Denis",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontFamily: 'GoogleSans',
                                       fontSize: 15,
                                       color: Colors.white,
@@ -158,14 +206,14 @@ class _JeuState extends State<Jeu> {
                               Image.asset('assets/images/stars.png', height: 100,
                                   width: 100),
                             ]),
-                            Padding(
+                            const Padding(
                               padding:
-                                  const EdgeInsets.only(bottom: 2, left: 7),
+                                  EdgeInsets.only(bottom: 2, left: 7),
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   "Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu, Sympa ce jeu,",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: 'GoogleSans',
                                     fontSize: 15,
                                     color: Colors.white,
@@ -300,7 +348,7 @@ class _JeuState extends State<Jeu> {
         });
   }
 
-  Future<GamesDetails> fetchGamesDetails(int appid) async {
+  Future<GamesDetails> getJeuDetails(int appid) async {
     final GamesDetails gameDetails = await fetchSingleInfos(appid);
     return gameDetails;
   }
@@ -331,14 +379,13 @@ class _JeuState extends State<Jeu> {
           IconButton(
               icon: SvgPicture.asset(
                 isPressed2
-                    ? "assets/icons/like.svg"
-                    : "assets/icons/like_full.svg",
+                    ? "assets/icons/like_full.svg"
+                    : "assets/icons/like.svg",
                 fit: BoxFit.fill,
               ),
               onPressed: () async {
                 try {
                   _pressed2(listeJeu, appId);
-                  print('ajoute');
                 } catch (e) {
                   print('error $e');
                 }
@@ -346,14 +393,13 @@ class _JeuState extends State<Jeu> {
           IconButton(
               icon: SvgPicture.asset(
                 isPressed
-                    ? "assets/icons/whishlist.svg"
-                    : "assets/icons/whishlist_full.svg",
+                    ? "assets/icons/whishlist_full.svg"
+                    : "assets/icons/whishlist.svg",
                 fit: BoxFit.fill,
               ),
               onPressed: () async {
                 try {
                   _pressed(listeJeu, appId);
-                  print('ajoute');
                 } catch (e) {
                   print('error $e');
                 }
