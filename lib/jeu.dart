@@ -19,6 +19,8 @@ class Jeu extends StatefulWidget {
 class _JeuState extends State<Jeu> {
   late Future<GamesDetails> _futureGame;
   final database = FirebaseDatabase.instance.ref();
+  final likes = FirebaseDatabase.instance.ref().child("Likes");
+  final wishlist = FirebaseDatabase.instance.ref().child("Wishlist");
 
   _JeuState();
 
@@ -26,8 +28,8 @@ class _JeuState extends State<Jeu> {
   initState() {
     super.initState();
     _futureGame = getJeuDetails(widget.appid);
-    getLiked(widget.appid);
-    getWishlisted(widget.appid);
+    getLiked(widget.appid, likes);
+    getWishlisted(widget.appid, wishlist);
   }
 
   bool isPressed = true;
@@ -43,14 +45,12 @@ class _JeuState extends State<Jeu> {
       isPressed = !isPressed;
     });
     if (isPressed) {
-      listeJeu.child(id.toString()).child("Wishlist").set({'wishlisted': true});
+      listeJeu.child(id.toString()).set({'wishlisted': true});
       print('added');
     } else {
-      listeJeu.child(id.toString()).child("Wishlist").remove();
+      listeJeu.child(id.toString()).remove();
       print('supp');
     }
-
-
   }
 
   _pressed2(final listeJeu, String? id) {
@@ -58,28 +58,27 @@ class _JeuState extends State<Jeu> {
       isPressed2 = !isPressed2;
     });
     if (isPressed2) {
-      listeJeu.child(id.toString()).child("Likes").set({'liked': true});
+      listeJeu.child(id.toString()).set({'liked': true});
       print('added');
     } else {
-      listeJeu.child(id.toString()).child("Likes").remove();
+      listeJeu.child(id.toString()).remove();
       print('supp');
     }
-
   }
 
-  Future<void> getLiked(int id) async {
+
+
+  Future<void> getLiked(int id, final listeJeu) async {
     try {
-      database.child("Profil/").child(id.toString()).child("Wishlist").once().then((DatabaseEvent event) {
+      listeJeu.child(id.toString()).once().then((DatabaseEvent event) {
         DataSnapshot snapshot = event.snapshot;
         if (snapshot.exists) {
           setState(() {
             isPressed2 = true;
-
           });
         } else {
           setState(() {
             isPressed2 = false;
-
           });
         }
       }).catchError((error) {
@@ -90,9 +89,9 @@ class _JeuState extends State<Jeu> {
     }
   }
 
-  Future<void> getWishlisted(int id) async {
+  Future<void> getWishlisted(int id,  final listeJeu) async {
     try {
-      database.child("Profil/").child(id.toString()).child("Likes").once().then((DatabaseEvent event) {
+      listeJeu.child(id.toString()).once().then((DatabaseEvent event) {
         DataSnapshot snapshot = event.snapshot;
         if (snapshot.exists) {
           setState(() {
@@ -355,8 +354,6 @@ class _JeuState extends State<Jeu> {
 
   @override
   Widget build(BuildContext context) {
-    final listeJeu = database.child("Profil/");
-
     return Scaffold(
       backgroundColor: c1,
       appBar: AppBar(
@@ -385,7 +382,7 @@ class _JeuState extends State<Jeu> {
               ),
               onPressed: () async {
                 try {
-                  _pressed2(listeJeu, appId);
+                  _pressed2(likes, appId);
                 } catch (e) {
                   print('error $e');
                 }
@@ -399,7 +396,7 @@ class _JeuState extends State<Jeu> {
               ),
               onPressed: () async {
                 try {
-                  _pressed(listeJeu, appId);
+                  _pressed(wishlist, appId);
                 } catch (e) {
                   print('error $e');
                 }
