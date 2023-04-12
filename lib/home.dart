@@ -72,19 +72,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
           image: AssetImage('assets/images/bg.jpg'),
           fit: BoxFit.cover,
         )),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
+         // mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(
                 left: 30,
                 right: 30,
                 bottom: 25,
+                top: 50,
               ),
               child: Container(
                 alignment: Alignment.center,
@@ -218,26 +219,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Inscription()),
-                  );
-                },
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.only(
-                  bottom: 10, top: 15, left: 30, right: 30),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: c2, //background color of button
-                    elevation: 3, //elevation of button
-                    padding:
-                        const EdgeInsets.all(30) //content padding inside button
-                    ),
-                child: const Text('ADMIN'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Accueil()),
                   );
                 },
               ),

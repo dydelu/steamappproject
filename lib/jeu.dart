@@ -341,7 +341,14 @@ class _JeuState extends State<Jeu> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: const [
                   CircularProgressIndicator(),
-                  Text("Veuillez patienter"),
+                  SizedBox(height: 10,),
+                  Center(
+                      child: Text("Veuillez patienter", textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "GoogleSans",
+                          fontSize: 20,
+                        ),)),
                 ]),
           );
         });

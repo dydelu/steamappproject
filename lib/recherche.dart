@@ -50,118 +50,132 @@ class _RechercheState extends State<Recherche> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final List<GamesDetails> resultsDetails = snapshot.data!;
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: resultsDetails.length,
-            itemBuilder: (context, index) {
-              final GamesDetails gameDetails = resultsDetails[index];
-              return Card(
-                margin: const EdgeInsets.all(5),
-                color: c3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 100.0,
-                          height: 100.0,
-                          child: Image.network(gameDetails.headerImage),
-                        ),
-                        Container(
-                          width: 190.0,
-                          height: 100.0,
-                          padding: const EdgeInsets.only(
-                              left: 5, bottom: 5, top: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+          if (resultsDetails.isEmpty) {
+            return const Center(
+                child: Text('Pas de resultats correspondant a la recherche', textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: "GoogleSans",
+                fontSize: 20,
+              ),));
+          }else {
+            return Visibility(
+                visible: true,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: resultsDetails.length,
+                  itemBuilder: (context, index) {
+                    final GamesDetails gameDetails = resultsDetails[index];
+                    return Card(
+                      margin: const EdgeInsets.all(5),
+                      color: c3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(bottom: 5, left: 7),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    gameDetails.name,
-                                    style: const TextStyle(
-                                      fontFamily: 'GoogleSans',
-                                      fontSize: 15,
-                                      color: Colors.white,
+                              SizedBox(
+                                width: 100.0,
+                                height: 100.0,
+                                child: Image.network(gameDetails.headerImage),
+                              ),
+                              Container(
+                                width: 190.0,
+                                height: 100.0,
+                                padding: const EdgeInsets.only(
+                                    left: 5, bottom: 5, top: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                      const EdgeInsets.only(bottom: 5, left: 7),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          gameDetails.name,
+                                          style: const TextStyle(
+                                            fontFamily: 'GoogleSans',
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    Padding(
+                                      padding:
+                                      const EdgeInsets.only(bottom: 2, left: 7),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          gameDetails.publisher,
+                                          style: const TextStyle(
+                                            fontFamily: 'GoogleSans',
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 2, left: 7),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          gameDetails.price,
+                                          style: const TextStyle(
+                                            fontFamily: 'GoogleSans',
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(bottom: 2, left: 7),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    gameDetails.publisher,
-                                    style: const TextStyle(
+                              const Spacer(),
+                              SizedBox(
+                                width: 90.0,
+                                height: 100.0,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(0.0),
+                                    ),
+                                    backgroundColor: c2,
+                                    elevation: 0,
+                                    padding: const EdgeInsets.all(2),
+                                    textStyle: const TextStyle(fontSize: 18),
+                                  ),
+                                  child: const Text(
+                                    'En savoir plus',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
                                       fontFamily: 'GoogleSans',
                                       fontSize: 15,
                                       color: Colors.white,
                                     ),
                                   ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 2, left: 7),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    gameDetails.price,
-                                    style: const TextStyle(
-                                      fontFamily: 'GoogleSans',
-                                      fontSize: 15,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Accueil()),
+                                    );
+                                  },
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          width: 90.0,
-                          height: 100.0,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0.0),
-                              ),
-                              backgroundColor: c2,
-                              elevation: 0,
-                              padding: const EdgeInsets.all(2),
-                              textStyle: const TextStyle(fontSize: 18),
-                            ),
-                            child: const Text(
-                              'En savoir plus',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: 'GoogleSans',
-                                fontSize: 15,
-                                color: Colors.white,
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Accueil()),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
+                        ],
+                      ),
+                    );
+                  },
+                )
+            );
+          }
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }

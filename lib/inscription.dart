@@ -56,8 +56,8 @@ class _InscriptionLoginState extends State<Inscription> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
+          //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(
@@ -161,6 +161,7 @@ class _InscriptionLoginState extends State<Inscription> {
               child: TextField(
                 controller: _passwordTextController,
                 textAlign: TextAlign.center,
+                obscureText: true,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
@@ -188,6 +189,7 @@ class _InscriptionLoginState extends State<Inscription> {
               padding: const EdgeInsets.only(bottom: 40, left: 30, right: 30),
               child: TextField(
                 textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white),
                 obscureText: true,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
